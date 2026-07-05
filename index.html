@@ -34,6 +34,16 @@ header .sub{margin:4px 0 0;font-size:13px;opacity:.85}
  padding:7px 13px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
 .fchip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
 .count{font-size:12px;color:var(--muted);padding:2px 2px 0}
+.syncrow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px}
+#syncinfo{font-size:12px;color:var(--muted)}
+#syncinfo b{color:var(--t4);font-variant-numeric:tabular-nums}
+#sync{border:1.5px solid var(--brand);background:#fff;color:var(--brand);padding:7px 14px;
+ border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+#sync:active{background:var(--brand);color:#fff}
+#sync.spin{opacity:.55;pointer-events:none}
+.soldtag{font-size:11px;font-weight:800;color:#fff;background:var(--t4);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.card.sold{opacity:.55;filter:grayscale(.55)}
+.card.sold .loc{text-decoration:line-through}
 section{margin-top:20px}
 h2.sh{font-size:16px;margin:0 0 10px;padding-bottom:7px;border-bottom:2px solid var(--line);
  display:flex;align-items:center;gap:8px}
@@ -130,6 +140,7 @@ table.data tr:last-child td{border-bottom:none}
 
 <div class="tools">
 <input id="q" type="search" inputmode="numeric" placeholder="חיפוש מהיר: מספר בניין או מספר דירה…" autocomplete="off">
+<div class="syncrow"><span id="syncinfo">בודק מלאי מול האתר…</span><button id="sync" type="button">🔄 סנכרן</button></div>
 <div class="chips" id="chips">
 <button class="fchip" data-f="all" aria-pressed="true">הכול</button>
 <button class="fchip" data-f="avail" aria-pressed="false">רק פנויות</button>
@@ -290,7 +301,7 @@ table.data tr:last-child td{border-bottom:none}
  function match(c){
    var t=(q.value||'').replace(/[^0-9]/g,'');
    if(t){ if(c.dataset.bld!==t && c.dataset.dira!==t) return false; }
-   if(filt==='avail'&&c.classList.contains('taken'))return false;
+   if(filt==='avail'&&(c.classList.contains('taken')||c.classList.contains('sold')))return false;
    if(filt==='D'&&c.dataset.type!=='D')return false;
    if(filt==='south'&&c.dataset.sun!=='דרום')return false;
    if(filt==='fl4'&&parseInt(c.dataset.floor,10)<4)return false;
@@ -326,7 +337,7 @@ table.data tr:last-child td{border-bottom:none}
  });
  document.getElementById('next').addEventListener('click',function(){
    var target=cards.find(function(c){
-     return !c.classList.contains('taken')&&!c.classList.contains('hide');
+     return !c.classList.contains('taken')&&!c.classList.contains('sold')&&!c.classList.contains('hide');
    });
    if(!target){alert('לא נמצאה דירה פנויה בתצוגה הנוכחית.');return;}
    target.scrollIntoView({behavior:'smooth',block:'center'});
@@ -337,6 +348,33 @@ table.data tr:last-child td{border-bottom:none}
    cards.forEach(function(c){c.classList.remove('taken');try{localStorage.removeItem(keyOf(c));}catch(e){}});
    apply();
  });
- load();apply();
+ function applyStatus(js){
+   var set={};(js.taken||[]).forEach(function(k){set[k]=1;});
+   var ours=0;
+   cards.forEach(function(c){
+     var sold=!!set[c.dataset.bld+'-'+c.dataset.dira];
+     c.classList.toggle('sold',sold);
+     var hd=c.querySelector('.hd'),tag=hd.querySelector('.soldtag');
+     if(sold&&!tag){tag=document.createElement('span');tag.className='soldtag';tag.textContent='לא זמין';hd.appendChild(tag);}
+     else if(!sold&&tag){tag.remove();}
+     if(sold)ours++;
+   });
+   var info=document.getElementById('syncinfo');
+   var ts='';
+   try{if(js.updated_utc){var d=new Date(js.updated_utc);
+     ts='עודכן '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+' · ';}}catch(e){}
+   info.innerHTML=ts+'<b>'+ours+'</b>/58 נתפסו לפי האתר';
+   apply();
+ }
+ function sync(){
+   var b=document.getElementById('sync');b.classList.add('spin');
+   fetch('status.json?t='+Date.now(),{cache:'no-store'})
+     .then(function(r){if(!r.ok)throw 0;return r.json();})
+     .then(function(js){applyStatus(js);})
+     .catch(function(){document.getElementById('syncinfo').textContent='סנכרון לא זמין (פתח דרך הקישור באתר)';})
+     .then(function(){b.classList.remove('spin');});
+ }
+ document.getElementById('sync').addEventListener('click',sync);
+ load();apply();sync();
 })();
 </script></body></html>
