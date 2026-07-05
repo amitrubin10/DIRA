@@ -1,0 +1,342 @@
+<!doctype html><html lang="he" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>דירוג דירות — HAKEREM כרמי גת</title><style>
+:root{
+ --ground:#eef3f2;--card:#ffffff;--ink:#16262a;--muted:#5c6b6e;--line:#dbe5e3;
+ --brand:#0e6e63;--brand-d:#0a4f47;--gold:#8a6d10;
+ --t1:#157347;--t1bg:#e4f3ea;--t2:#0e7c74;--t2bg:#e1f1ef;
+ --t3:#a86c0b;--t3bg:#f8efda;--t4:#a8452e;--t4bg:#f6e6e0;
+ --sun-s:#157347;--sun-e:#a86c0b;--sun-n:#566d76;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);
+ font-family:system-ui,-apple-system,"Segoe UI","Arial Hebrew","Noto Sans Hebrew",Arial,sans-serif;
+ line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 14px 120px}
+.tnum{font-variant-numeric:tabular-nums}
+header{background:linear-gradient(135deg,var(--brand-d),var(--brand));color:#fff;
+ padding:20px 16px 18px;border-radius:0 0 18px 18px}
+.hwrap{max-width:720px;margin:0 auto}
+header h1{margin:0;font-size:21px;letter-spacing:-.01em;text-wrap:balance}
+header .sub{margin:4px 0 0;font-size:13px;opacity:.85}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.meta span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22);
+ padding:3px 9px;border-radius:999px;font-size:12px}
+/* search + filters */
+.tools{position:sticky;top:0;z-index:30;background:var(--ground);
+ padding:10px 0 8px;margin:0 -14px;padding-inline:14px;
+ box-shadow:0 6px 12px -10px rgba(0,0,0,.35)}
+#q{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:12px;
+ font-size:16px;font-family:inherit;background:#fff;color:var(--ink)}
+#q:focus{outline:2px solid var(--brand);border-color:var(--brand)}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:9px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.fchip{white-space:nowrap;border:1.5px solid var(--line);background:#fff;color:var(--muted);
+ padding:7px 13px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.fchip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.count{font-size:12px;color:var(--muted);padding:2px 2px 0}
+section{margin-top:20px}
+h2.sh{font-size:16px;margin:0 0 10px;padding-bottom:7px;border-bottom:2px solid var(--line);
+ display:flex;align-items:center;gap:8px}
+h2.sh .ic{font-size:18px}
+details.method{background:#fff;border:1px solid var(--line);border-radius:14px;padding:2px 14px}
+details.method summary{cursor:pointer;font-weight:700;padding:12px 0;font-size:15px;list-style:none}
+details.method summary::-webkit-details-marker{display:none}
+details.method summary::after{content:"▾";float:left;color:var(--muted)}
+details.method[open] summary::after{content:"▴"}
+.mtable{width:100%;border-collapse:collapse;font-size:13.5px;margin:4px 0 14px}
+.mtable th,.mtable td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:right;vertical-align:top}
+.mtable th{color:var(--muted);font-weight:600}
+.mtable td:first-child{font-weight:700;white-space:nowrap}
+/* hero */
+.hero{background:#fff;border:1px solid var(--line);border-top:5px solid var(--gold);
+ border-radius:16px;padding:16px;box-shadow:0 10px 24px -18px rgba(0,0,0,.4)}
+.hero .crown{font-size:13px;font-weight:800;color:var(--gold);letter-spacing:.02em}
+.hero .big{font-size:22px;font-weight:800;margin:3px 0 2px}
+.hero .line{font-size:14px;color:var(--muted)}
+.hero .facts{margin-top:10px}
+/* scroll tables */
+.scroller{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
+table.data{border-collapse:collapse;width:100%;font-size:13.5px;min-width:520px}
+table.data th,table.data td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+table.data thead th{background:#f4f8f7;color:var(--brand-d);font-weight:700;position:sticky;top:0}
+table.data td:first-child{font-weight:800}
+table.data tr:last-child td{border-bottom:none}
+.hl{background:var(--t1bg)}
+.insight{margin-top:14px;background:#fdf6e3;border:1px solid #eddfae;
+ border-right:5px solid var(--gold);border-radius:12px;padding:13px 15px;font-size:14px}
+.insight b{color:var(--gold)}
+/* tier separators */
+.tsep{position:sticky;top:56px;z-index:10;margin:22px 0 10px;padding:8px 13px;border-radius:11px;
+ font-size:13px;font-weight:600;color:#fff;display:flex;gap:8px;align-items:baseline;text-wrap:balance}
+.tsep span{font-weight:800;font-size:14px}
+.ts1{background:var(--t1)}.ts2{background:var(--t2)}.ts3{background:var(--t3)}.ts4{background:var(--t4)}
+/* cards */
+.card{display:flex;gap:0;background:#fff;border:1px solid var(--line);border-radius:14px;
+ margin:9px 0;overflow:hidden;position:relative}
+.card.t1{border-right:5px solid var(--t1)}.card.t2{border-right:5px solid var(--t2)}
+.card.t3{border-right:5px solid var(--t3)}.card.t4{border-right:5px solid var(--t4)}
+.card.four{border-right:5px solid var(--brand)}
+.rk{flex:0 0 46px;display:flex;align-items:center;justify-content:center;
+ font-size:20px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums}
+.t1 .rk{background:var(--t1)}.t2 .rk{background:var(--t2)}
+.t3 .rk{background:var(--t3)}.t4 .rk{background:var(--t4)}
+.rk4{background:var(--brand);font-size:14px}
+.bd{flex:1;padding:11px 13px;min-width:0}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.loc{font-weight:800;font-size:15.5px}
+.sun{font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.sun-s{background:var(--t1bg);color:var(--sun-s)}
+.sun-e{background:var(--t3bg);color:var(--sun-e)}
+.sun-n{background:#e7edee;color:var(--sun-n)}
+.facts{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.chip{background:#f1f5f4;border:1px solid var(--line);border-radius:7px;padding:2px 8px;
+ font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.price{margin-inline-start:auto;font-weight:800;font-size:15px;color:var(--brand-d);
+ font-variant-numeric:tabular-nums}
+.why{margin:2px 0 8px;font-size:13.5px;color:#3a4a4d;text-wrap:pretty}
+.pc{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+.pc li{font-size:13px;padding-inline-start:20px;position:relative;color:#37474a}
+.pc li::before{position:absolute;inset-inline-start:0;top:0;font-weight:800}
+.pc .pro::before{content:"✓";color:var(--t1)}
+.pc .con::before{content:"✗";color:var(--t4)}
+.take{flex:0 0 40px;border:none;border-inline-start:1px dashed var(--line);background:#fafcfb;
+ color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;
+ writing-mode:vertical-rl;text-orientation:mixed;padding:0}
+.take:hover{background:var(--t1bg);color:var(--t1)}
+.card.taken{opacity:.5;filter:grayscale(.6)}
+.card.taken .loc{text-decoration:line-through}
+.card.taken .take{background:var(--t4);color:#fff;border-inline-start-color:var(--t4)}
+.card.flash{animation:fl 1.4s ease}
+@keyframes fl{0%,100%{box-shadow:0 0 0 0 rgba(14,110,99,0)}30%{box-shadow:0 0 0 4px rgba(14,110,99,.5)}}
+.hide{display:none!important}
+/* bottom action bar */
+.bar{position:fixed;inset-inline:0;bottom:0;z-index:40;background:rgba(255,255,255,.96);
+ backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:10px 14px;
+ display:flex;gap:9px;max-width:720px;margin:0 auto}
+.bar button{flex:1;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:800;
+ font-family:inherit;cursor:pointer}
+#next{background:var(--brand);color:#fff}
+#reset{background:#eef2f1;color:var(--muted);flex:0 0 auto;padding-inline:16px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:20px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body><title>דירוג דירות — HAKEREM כרמי גת</title>
+<header><div class="hwrap">
+<h1>דירוג דירות · פרויקט HAKEREM</h1>
+<p class="sub">כרמי גת צפון · מחיר מטרה · 3.5 חדרים (השקעה)</p>
+<div class="meta"><span>מיקום בבחירה: 168</span><span>מועד: 7.8.2026</span><span>58 דירות מדורגות</span></div>
+</div></header>
+
+<div class="wrap">
+
+<div class="tools">
+<input id="q" type="search" inputmode="numeric" placeholder="חיפוש מהיר: מספר בניין או מספר דירה…" autocomplete="off">
+<div class="chips" id="chips">
+<button class="fchip" data-f="all" aria-pressed="true">הכול</button>
+<button class="fchip" data-f="avail" aria-pressed="false">רק פנויות</button>
+<button class="fchip" data-f="D" aria-pressed="false">דגם D</button>
+<button class="fchip" data-f="south" aria-pressed="false">דרום בלבד</button>
+<button class="fchip" data-f="fl4" aria-pressed="false">קומה 4+</button>
+</div>
+<div class="count" id="count"></div>
+</div>
+
+<section>
+<div class="hero">
+<div class="crown">★ הבחירה מספר 1</div>
+<div class="big">בניין 1 · דירה 20</div>
+<div class="line">דגם D · קומה 4 · דרום · 79.98 מ״ר</div>
+<div class="facts"><span class="chip">995,354 ₪</span><span class="sun sun-s">דרום ☀️</span></div>
+<p class="why" style="margin-bottom:0">הגדולה והמשתלמת ביותר, פונה דרום אל חצר פנימית ירוקה ושקטה, קומה גבוהה, במגדל מבודד. הצירוף המנצח.</p>
+</div>
+</section>
+
+<section>
+<details class="method">
+<summary>איך נבנה הדירוג? (4 גורמים)</summary>
+<table class="mtable">
+<tr><th>גורם</th><th>ההיגיון</th></tr>
+<tr><td>כיוון השמש</td><td>דרום = הכי טוב בישראל ← מזרח (שמש בוקר) ← צפון = הכי חלש</td></tr>
+<tr><td>דגם הדירה</td><td>D (הגדולה+המשתלמת) ← S/SM (הזולה, מרפסת גדולה) ← H (הנפוצה)</td></tr>
+<tr><td>קומה</td><td>4–6 אידיאלי · קומה 3 טוב · קומה 1–2 "נמוך מדי"</td></tr>
+<tr><td>מחיר</td><td>שובר-שוויון בלבד — הטווח צפוף (~6% הפרש בלבד)</td></tr>
+</table>
+<p style="font-size:13px;color:var(--muted);margin:0 0 12px">כל דירות ה-3.5 צמודות לליבת הבניין (פיר אשפה/מדרגות) באותה מידה — לכן זה לא משנה בדירוג. המבדיל העיקרי הוא כיוון השמש (לפי בניין) והקומה.</p>
+</details>
+</section>
+
+<section>
+<h2 class="sh"><span class="ic">🧭</span> תמונת מצב — כמה דירות מכל סוג</h2>
+<p style="font-size:13.5px;color:var(--muted);margin:0 0 8px"><b>3.5 חדרים — 58 דירות, 4 קודי דגם (= 3 תבניות אמיתיות):</b></p>
+<div class="scroller"><table class="data">
+<thead><tr><th>דגם</th><th>יח׳</th><th>בניינים</th><th>שטח</th><th>מרפסת</th><th>טווח מחיר</th></tr></thead>
+<tbody>
+<tr class="hl"><td>D</td><td class="tnum">11</td><td>1, 8 (מגדלי T)</td><td class="tnum">79.98</td><td class="tnum">11.89</td><td class="tnum">967–1,017 אלף</td></tr>
+<tr><td>H</td><td class="tnum">41</td><td>3,4,5,6,7,9,10,11</td><td class="tnum">78.74</td><td class="tnum">11.49</td><td class="tnum">994–1,038 אלף</td></tr>
+<tr><td>S</td><td class="tnum">3</td><td>2 (G)</td><td class="tnum">76.98</td><td class="tnum">13.15</td><td class="tnum">973–976 אלף</td></tr>
+<tr><td>SM</td><td class="tnum">3</td><td>2 (G)</td><td class="tnum">76.98</td><td class="tnum">13.15</td><td class="tnum">961–977 אלף</td></tr>
+</tbody></table></div>
+<p style="font-size:12px;color:var(--muted);margin:6px 2px 0">S ו-SM הן אותה תבנית במראה-ראי → 3 תבניות אמיתיות בלבד.</p>
+
+<p style="font-size:13.5px;color:var(--muted);margin:16px 0 8px"><b>4 חדרים — 156 דירות, 7 קודי דגם (גיבוי):</b></p>
+<div class="scroller"><table class="data">
+<thead><tr><th>דגם</th><th>יח׳</th><th>בניינים</th><th>שטח (≈)</th></tr></thead>
+<tbody>
+<tr><td>F</td><td class="tnum">51</td><td>רוב הבניינים</td><td class="tnum">~99–102</td></tr>
+<tr><td>I</td><td class="tnum">31</td><td>רוב הבניינים</td><td class="tnum">~99–102</td></tr>
+<tr><td>FM</td><td class="tnum">26</td><td>רוב הבניינים</td><td class="tnum">~99–102</td></tr>
+<tr class="hl"><td>A</td><td class="tnum">16</td><td>1, 8 (מגדלי T)</td><td class="tnum">100.23</td></tr>
+<tr class="hl"><td>C</td><td class="tnum">14</td><td>1, 8 (מגדלי T)</td><td class="tnum">101.50</td></tr>
+<tr class="hl"><td>CM</td><td class="tnum">14</td><td>1, 8 (מגדלי T)</td><td class="tnum">101.46</td></tr>
+<tr><td>I-W</td><td class="tnum">4</td><td>10 (FW)</td><td class="tnum">98.95</td></tr>
+</tbody></table></div>
+
+<div class="insight">
+<b>למה הרשימה ארוכה?</b> דגם D (המומלץ) הוא <b>נדיר — רק 11 יח׳</b> בכל הפרויקט (מגדלי T1/T2 בלבד), ומתוכן <b>רק 5 בקומה 4+</b>. לעומתו דגם H נפוץ מאוד (41 יח׳) — הרבה יותר סביר שיישאר פנוי כשיגיע תורך במקום 168. לכן חשובה רשימה מדורגת ארוכה: מ-D האידיאלי, דרך H הטוב, ועד גיבוי ב-4 חדרים.
+</div>
+</section>
+
+<section>
+<h2 class="sh"><span class="ic">🏆</span> הדירוג המלא — 3.5 חדרים</h2>
+<p style="font-size:13px;color:var(--muted);margin:-4px 0 4px">מהמועדפת ביותר ← הכי פחות. סמן דירות שנתפסו (כפתור "נלקחה"), והראשונה שנשארה למעלה — זו שלך.</p>
+<h3 class="tsep ts1"><span>קבוצה א׳</span> הטופ המוחלט — דגם D, דרום, קומה גבוהה</h3>
+<article class="card t1" data-bld="1" data-code="T1" data-dira="20" data-rank="1" data-type="D" data-sun="דרום" data-floor="4"><div class="rk">1</div><div class="bd"><div class="hd"><span class="loc">בניין 1 · דירה 20</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 4</span><span class="chip">79.98 מ״ר</span><span class="price">995,354 ₪</span></div><p class="why">שילוב מנצח: הדגם הכי טוב + דרום + קומה גבוהה. הבחירה האידיאלית.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li><li class="pro">קומה 4 — עומדת ביעד הקומה שלך</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t1" data-bld="8" data-code="T2" data-dira="22" data-rank="2" data-type="D" data-sun="דרום" data-floor="4"><div class="rk">2</div><div class="bd"><div class="hd"><span class="loc">בניין 8 · דירה 22</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 4</span><span class="chip">79.98 מ״ר</span><span class="price">996,511 ₪</span></div><p class="why">שילוב מנצח: הדגם הכי טוב + דרום + קומה גבוהה. הבחירה האידיאלית.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li><li class="pro">קומה 4 — עומדת ביעד הקומה שלך</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t1" data-bld="1" data-code="T1" data-dira="25" data-rank="3" data-type="D" data-sun="דרום" data-floor="5"><div class="rk">3</div><div class="bd"><div class="hd"><span class="loc">בניין 1 · דירה 25</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 5</span><span class="chip">79.98 מ״ר</span><span class="price">1,005,633 ₪</span></div><p class="why">שילוב מנצח: הדגם הכי טוב + דרום + קומה גבוהה. הבחירה האידיאלית.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li><li class="pro">קומה 5 — נוף, אוויר ופרטיות</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t1" data-bld="8" data-code="T2" data-dira="27" data-rank="4" data-type="D" data-sun="דרום" data-floor="5"><div class="rk">4</div><div class="bd"><div class="hd"><span class="loc">בניין 8 · דירה 27</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 5</span><span class="chip">79.98 מ״ר</span><span class="price">1,007,886 ₪</span></div><p class="why">שילוב מנצח: הדגם הכי טוב + דרום + קומה גבוהה. הבחירה האידיאלית.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li><li class="pro">קומה 5 — נוף, אוויר ופרטיות</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t1" data-bld="1" data-code="T1" data-dira="30" data-rank="5" data-type="D" data-sun="דרום" data-floor="6"><div class="rk">5</div><div class="bd"><div class="hd"><span class="loc">בניין 1 · דירה 30</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 6</span><span class="chip">79.98 מ״ר</span><span class="price">1,016,518 ₪</span></div><p class="why">שילוב מנצח: הדגם הכי טוב + דרום + קומה גבוהה. הבחירה האידיאלית.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li><li class="pro">קומה 6 — נוף, אוויר ופרטיות</li><li class="con">מהיקרות בקטגוריה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t1" data-bld="1" data-code="T1" data-dira="15" data-rank="6" data-type="D" data-sun="דרום" data-floor="3"><div class="rk">6</div><div class="bd"><div class="hd"><span class="loc">בניין 1 · דירה 15</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 3</span><span class="chip">79.98 מ״ר</span><span class="price">991,429 ₪</span></div><p class="why">דגם וכיוון מעולים; יורדת מעט רק בגלל קומה 3.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t1" data-bld="8" data-code="T2" data-dira="17" data-rank="7" data-type="D" data-sun="דרום" data-floor="3"><div class="rk">7</div><div class="bd"><div class="hd"><span class="loc">בניין 8 · דירה 17</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 3</span><span class="chip">79.98 מ״ר</span><span class="price">991,861 ₪</span></div><p class="why">דגם וכיוון מעולים; יורדת מעט רק בגלל קומה 3.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<h3 class="tsep ts2"><span>קבוצה ב׳</span> מצוין — H דרום, קומה 4–6</h3>
+<article class="card t2" data-bld="9" data-code="E" data-dira="32" data-rank="8" data-type="H" data-sun="דרום" data-floor="6"><div class="rk">8</div><div class="bd"><div class="hd"><span class="loc">בניין 9 · דירה 32</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 6</span><span class="chip">78.74 מ״ר</span><span class="price">996,153 ₪</span></div><p class="why">כיוון דרום מצוין וקומה גבוהה; דגם נפוץ שסביר שיהיה זמין.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 6 — נוף, אוויר ופרטיות</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t2" data-bld="9" data-code="E" data-dira="27" data-rank="9" data-type="H" data-sun="דרום" data-floor="5"><div class="rk">9</div><div class="bd"><div class="hd"><span class="loc">בניין 9 · דירה 27</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 5</span><span class="chip">78.74 מ״ר</span><span class="price">996,300 ₪</span></div><p class="why">כיוון דרום מצוין וקומה גבוהה; דגם נפוץ שסביר שיהיה זמין.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 5 — נוף, אוויר ופרטיות</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t2" data-bld="10" data-code="FW" data-dira="27" data-rank="10" data-type="H" data-sun="דרום" data-floor="5"><div class="rk">10</div><div class="bd"><div class="hd"><span class="loc">בניין 10 · דירה 27</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 5</span><span class="chip">78.74 מ״ר</span><span class="price">997,989 ₪</span></div><p class="why">כיוון דרום מצוין וקומה גבוהה; דגם נפוץ שסביר שיהיה זמין.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 5 — נוף, אוויר ופרטיות</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t2" data-bld="9" data-code="E" data-dira="22" data-rank="11" data-type="H" data-sun="דרום" data-floor="4"><div class="rk">11</div><div class="bd"><div class="hd"><span class="loc">בניין 9 · דירה 22</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 4</span><span class="chip">78.74 מ״ר</span><span class="price">1,000,852 ₪</span></div><p class="why">כיוון דרום מצוין וקומה גבוהה; דגם נפוץ שסביר שיהיה זמין.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 4 — עומדת ביעד הקומה שלך</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t2" data-bld="10" data-code="FW" data-dira="22" data-rank="12" data-type="H" data-sun="דרום" data-floor="4"><div class="rk">12</div><div class="bd"><div class="hd"><span class="loc">בניין 10 · דירה 22</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 4</span><span class="chip">78.74 מ״ר</span><span class="price">1,002,100 ₪</span></div><p class="why">כיוון דרום מצוין וקומה גבוהה; דגם נפוץ שסביר שיהיה זמין.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 4 — עומדת ביעד הקומה שלך</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<h3 class="tsep ts3"><span>קבוצה ג׳</span> טוב — דרום/מזרח, קומה נמוכה יותר או דגם קטן</h3>
+<article class="card t3" data-bld="8" data-code="T2" data-dira="12" data-rank="13" data-type="D" data-sun="דרום" data-floor="2"><div class="rk">13</div><div class="bd"><div class="hd"><span class="loc">בניין 8 · דירה 12</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 2</span><span class="chip">79.98 מ״ר</span><span class="price">983,811 ₪</span></div><p class="why">דגם וכיוון מעולים, אך הקומה הנמוכה מורידה אותה בדירוג.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="1" data-code="T1" data-dira="10" data-rank="14" data-type="D" data-sun="דרום" data-floor="2"><div class="rk">14</div><div class="bd"><div class="hd"><span class="loc">בניין 1 · דירה 10</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 2</span><span class="chip">79.98 מ״ר</span><span class="price">984,026 ₪</span></div><p class="why">דגם וכיוון מעולים, אך הקומה הנמוכה מורידה אותה בדירוג.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="10" data-code="FW" data-dira="17" data-rank="15" data-type="H" data-sun="דרום" data-floor="3"><div class="rk">15</div><div class="bd"><div class="hd"><span class="loc">בניין 10 · דירה 17</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 3</span><span class="chip">78.74 מ״ר</span><span class="price">999,604 ₪</span></div><p class="why">דרום טוב וקומה סבירה — בחירה טובה ובטוחה.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="11" data-code="FE" data-dira="17" data-rank="16" data-type="H" data-sun="דרום" data-floor="3"><div class="rk">16</div><div class="bd"><div class="hd"><span class="loc">בניין 11 · דירה 17</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 3</span><span class="chip">78.74 מ״ר</span><span class="price">1,008,415 ₪</span></div><p class="why">דרום טוב וקומה סבירה — בחירה טובה ובטוחה.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="9" data-code="E" data-dira="17" data-rank="17" data-type="H" data-sun="דרום" data-floor="3"><div class="rk">17</div><div class="bd"><div class="hd"><span class="loc">בניין 9 · דירה 17</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 3</span><span class="chip">78.74 מ״ר</span><span class="price">1,037,858 ₪</span></div><p class="why">דרום טוב וקומה סבירה — בחירה טובה ובטוחה.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">מהיקרות בקטגוריה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="1" data-code="T1" data-dira="5" data-rank="18" data-type="D" data-sun="דרום" data-floor="1"><div class="rk">18</div><div class="bd"><div class="hd"><span class="loc">בניין 1 · דירה 5</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 1</span><span class="chip">79.98 מ״ר</span><span class="price">967,213 ₪</span></div><p class="why">דגם וכיוון מעולים, אך הקומה הנמוכה מורידה אותה בדירוג.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li><li class="pro">מהמחירים הנמוכים בפרויקט</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="8" data-code="T2" data-dira="7" data-rank="19" data-type="D" data-sun="דרום" data-floor="1"><div class="rk">19</div><div class="bd"><div class="hd"><span class="loc">בניין 8 · דירה 7</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם D</span><span class="chip">קומה 1</span><span class="chip">79.98 מ״ר</span><span class="price">975,689 ₪</span></div><p class="why">דגם וכיוון מעולים, אך הקומה הנמוכה מורידה אותה בדירוג.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם D — הגדולה (80 מ״ר) והמשתלמת ביותר למ״ר</li><li class="pro">מגדל מבודד (T) — מעט שכנים בקומה, יותר אוויר</li><li class="pro">מהמחירים הנמוכים בפרויקט</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="11" data-code="FE" data-dira="12" data-rank="20" data-type="H" data-sun="דרום" data-floor="2"><div class="rk">20</div><div class="bd"><div class="hd"><span class="loc">בניין 11 · דירה 12</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 2</span><span class="chip">78.74 מ״ר</span><span class="price">998,870 ₪</span></div><p class="why">כיוון דרום מצוין, אך הקומה נמוכה.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="9" data-code="E" data-dira="12" data-rank="21" data-type="H" data-sun="דרום" data-floor="2"><div class="rk">21</div><div class="bd"><div class="hd"><span class="loc">בניין 9 · דירה 12</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 2</span><span class="chip">78.74 מ״ר</span><span class="price">999,310 ₪</span></div><p class="why">כיוון דרום מצוין, אך הקומה נמוכה.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="10" data-code="FW" data-dira="12" data-rank="22" data-type="H" data-sun="דרום" data-floor="2"><div class="rk">22</div><div class="bd"><div class="hd"><span class="loc">בניין 10 · דירה 12</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 2</span><span class="chip">78.74 מ״ר</span><span class="price">1,004,376 ₪</span></div><p class="why">כיוון דרום מצוין, אך הקומה נמוכה.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="2" data-code="G" data-dira="9" data-rank="23" data-type="S" data-sun="מזרח" data-floor="3"><div class="rk">23</div><div class="bd"><div class="hd"><span class="loc">בניין 2 · דירה 9</span><span class="sun sun-e">מזרח 🌤️</span></div><div class="facts"><span class="chip">דגם S</span><span class="chip">קומה 3</span><span class="chip">76.98 מ״ר</span><span class="price">972,694 ₪</span></div><p class="why">מהזולות ביותר, עם שמש בוקר; יורדת בגלל דגם קטן וקומה עד 3 בלבד.</p><ul class="pc"><li class="pro">שמש בוקר נעימה, קריר יותר בקיץ</li><li class="pro">מרפסת גדולה במיוחד (13 מ״ר)</li><li class="pro">מהמחירים הנמוכים בפרויקט</li><li class="con">הדגם הקטן ביותר (77 מ״ר)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="2" data-code="G" data-dira="12" data-rank="24" data-type="SM" data-sun="מזרח" data-floor="3"><div class="rk">24</div><div class="bd"><div class="hd"><span class="loc">בניין 2 · דירה 12</span><span class="sun sun-e">מזרח 🌤️</span></div><div class="facts"><span class="chip">דגם SM</span><span class="chip">קומה 3</span><span class="chip">76.98 מ״ר</span><span class="price">977,099 ₪</span></div><p class="why">מהזולות ביותר, עם שמש בוקר; יורדת בגלל דגם קטן וקומה עד 3 בלבד.</p><ul class="pc"><li class="pro">שמש בוקר נעימה, קריר יותר בקיץ</li><li class="pro">מרפסת גדולה במיוחד (13 מ״ר)</li><li class="pro">מהמחירים הנמוכים בפרויקט</li><li class="con">הדגם הקטן ביותר (77 מ״ר)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="2" data-code="G" data-dira="5" data-rank="25" data-type="S" data-sun="מזרח" data-floor="2"><div class="rk">25</div><div class="bd"><div class="hd"><span class="loc">בניין 2 · דירה 5</span><span class="sun sun-e">מזרח 🌤️</span></div><div class="facts"><span class="chip">דגם S</span><span class="chip">קומה 2</span><span class="chip">76.98 מ״ר</span><span class="price">973,134 ₪</span></div><p class="why">מהזולות ביותר, עם שמש בוקר; יורדת בגלל דגם קטן וקומה עד 3 בלבד.</p><ul class="pc"><li class="pro">שמש בוקר נעימה, קריר יותר בקיץ</li><li class="pro">מרפסת גדולה במיוחד (13 מ״ר)</li><li class="pro">מהמחירים הנמוכים בפרויקט</li><li class="con">הדגם הקטן ביותר (77 מ״ר)</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="2" data-code="G" data-dira="8" data-rank="26" data-type="SM" data-sun="מזרח" data-floor="2"><div class="rk">26</div><div class="bd"><div class="hd"><span class="loc">בניין 2 · דירה 8</span><span class="sun sun-e">מזרח 🌤️</span></div><div class="facts"><span class="chip">דגם SM</span><span class="chip">קומה 2</span><span class="chip">76.98 מ״ר</span><span class="price">974,162 ₪</span></div><p class="why">מהזולות ביותר, עם שמש בוקר; יורדת בגלל דגם קטן וקומה עד 3 בלבד.</p><ul class="pc"><li class="pro">שמש בוקר נעימה, קריר יותר בקיץ</li><li class="pro">מרפסת גדולה במיוחד (13 מ״ר)</li><li class="pro">מהמחירים הנמוכים בפרויקט</li><li class="con">הדגם הקטן ביותר (77 מ״ר)</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="11" data-code="FE" data-dira="7" data-rank="27" data-type="H" data-sun="דרום" data-floor="1"><div class="rk">27</div><div class="bd"><div class="hd"><span class="loc">בניין 11 · דירה 7</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 1</span><span class="chip">78.74 מ״ר</span><span class="price">994,170 ₪</span></div><p class="why">כיוון דרום מצוין, אך הקומה נמוכה.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="9" data-code="E" data-dira="7" data-rank="28" data-type="H" data-sun="דרום" data-floor="1"><div class="rk">28</div><div class="bd"><div class="hd"><span class="loc">בניין 9 · דירה 7</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 1</span><span class="chip">78.74 מ״ר</span><span class="price">1,000,338 ₪</span></div><p class="why">כיוון דרום מצוין, אך הקומה נמוכה.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t3" data-bld="10" data-code="FW" data-dira="7" data-rank="29" data-type="H" data-sun="דרום" data-floor="1"><div class="rk">29</div><div class="bd"><div class="hd"><span class="loc">בניין 10 · דירה 7</span><span class="sun sun-s">דרום ☀️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 1</span><span class="chip">78.74 מ״ר</span><span class="price">1,003,495 ₪</span></div><p class="why">כיוון דרום מצוין, אך הקומה נמוכה.</p><ul class="pc"><li class="pro">שמש דרום מלאה לאורך כל היום</li><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<h3 class="tsep ts4"><span>קבוצה ד׳</span> רק כמוצא אחרון — פונה צפון, שמש חלשה</h3>
+<article class="card t4" data-bld="4" data-code="BE" data-dira="32" data-rank="30" data-type="H" data-sun="צפון" data-floor="6"><div class="rk">30</div><div class="bd"><div class="hd"><span class="loc">בניין 4 · דירה 32</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 6</span><span class="chip">78.74 מ״ר</span><span class="price">995,052 ₪</span></div><p class="why">פונה צפון (שמש חלשה) — רק כמוצא אחרון, אך לפחות בקומה גבוהה.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 6 — נוף, אוויר ופרטיות</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="4" data-code="BE" data-dira="27" data-rank="31" data-type="H" data-sun="צפון" data-floor="5"><div class="rk">31</div><div class="bd"><div class="hd"><span class="loc">בניין 4 · דירה 27</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 5</span><span class="chip">78.74 מ״ר</span><span class="price">997,107 ₪</span></div><p class="why">פונה צפון (שמש חלשה) — רק כמוצא אחרון, אך לפחות בקומה גבוהה.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 5 — נוף, אוויר ופרטיות</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="5" data-code="BW" data-dira="27" data-rank="32" data-type="H" data-sun="צפון" data-floor="5"><div class="rk">32</div><div class="bd"><div class="hd"><span class="loc">בניין 5 · דירה 27</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 5</span><span class="chip">78.74 מ״ר</span><span class="price">998,282 ₪</span></div><p class="why">פונה צפון (שמש חלשה) — רק כמוצא אחרון, אך לפחות בקומה גבוהה.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 5 — נוף, אוויר ופרטיות</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="5" data-code="BW" data-dira="32" data-rank="33" data-type="H" data-sun="צפון" data-floor="6"><div class="rk">33</div><div class="bd"><div class="hd"><span class="loc">בניין 5 · דירה 32</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 6</span><span class="chip">78.74 מ״ר</span><span class="price">999,237 ₪</span></div><p class="why">פונה צפון (שמש חלשה) — רק כמוצא אחרון, אך לפחות בקומה גבוהה.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 6 — נוף, אוויר ופרטיות</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="4" data-code="BE" data-dira="22" data-rank="34" data-type="H" data-sun="צפון" data-floor="4"><div class="rk">34</div><div class="bd"><div class="hd"><span class="loc">בניין 4 · דירה 22</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 4</span><span class="chip">78.74 מ״ר</span><span class="price">999,384 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 4 — עומדת ביעד הקומה שלך</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="3" data-code="A" data-dira="20" data-rank="35" data-type="H" data-sun="צפון" data-floor="4"><div class="rk">35</div><div class="bd"><div class="hd"><span class="loc">בניין 3 · דירה 20</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 4</span><span class="chip">78.74 מ״ר</span><span class="price">999,604 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 4 — עומדת ביעד הקומה שלך</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="7" data-code="B2" data-dira="32" data-rank="36" data-type="H" data-sun="צפון" data-floor="6"><div class="rk">36</div><div class="bd"><div class="hd"><span class="loc">בניין 7 · דירה 32</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 6</span><span class="chip">78.74 מ״ר</span><span class="price">999,751 ₪</span></div><p class="why">פונה צפון (שמש חלשה) — רק כמוצא אחרון, אך לפחות בקומה גבוהה.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 6 — נוף, אוויר ופרטיות</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="6" data-code="C" data-dira="22" data-rank="37" data-type="H" data-sun="צפון" data-floor="4"><div class="rk">37</div><div class="bd"><div class="hd"><span class="loc">בניין 6 · דירה 22</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 4</span><span class="chip">78.74 מ״ר</span><span class="price">1,000,118 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 4 — עומדת ביעד הקומה שלך</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="7" data-code="B2" data-dira="27" data-rank="38" data-type="H" data-sun="צפון" data-floor="5"><div class="rk">38</div><div class="bd"><div class="hd"><span class="loc">בניין 7 · דירה 27</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 5</span><span class="chip">78.74 מ״ר</span><span class="price">1,000,852 ₪</span></div><p class="why">פונה צפון (שמש חלשה) — רק כמוצא אחרון, אך לפחות בקומה גבוהה.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 5 — נוף, אוויר ופרטיות</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="3" data-code="A" data-dira="25" data-rank="39" data-type="H" data-sun="צפון" data-floor="5"><div class="rk">39</div><div class="bd"><div class="hd"><span class="loc">בניין 3 · דירה 25</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 5</span><span class="chip">78.74 מ״ר</span><span class="price">1,001,880 ₪</span></div><p class="why">פונה צפון (שמש חלשה) — רק כמוצא אחרון, אך לפחות בקומה גבוהה.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 5 — נוף, אוויר ופרטיות</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="5" data-code="BW" data-dira="22" data-rank="40" data-type="H" data-sun="צפון" data-floor="4"><div class="rk">40</div><div class="bd"><div class="hd"><span class="loc">בניין 5 · דירה 22</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 4</span><span class="chip">78.74 מ״ר</span><span class="price">1,007,093 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 4 — עומדת ביעד הקומה שלך</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="7" data-code="B2" data-dira="22" data-rank="41" data-type="H" data-sun="צפון" data-floor="4"><div class="rk">41</div><div class="bd"><div class="hd"><span class="loc">בניין 7 · דירה 22</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 4</span><span class="chip">78.74 מ״ר</span><span class="price">1,012,600 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 4 — עומדת ביעד הקומה שלך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">מהיקרות בקטגוריה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="2" data-code="G" data-dira="4" data-rank="42" data-type="SM" data-sun="מזרח" data-floor="1"><div class="rk">42</div><div class="bd"><div class="hd"><span class="loc">בניין 2 · דירה 4</span><span class="sun sun-e">מזרח 🌤️</span></div><div class="facts"><span class="chip">דגם SM</span><span class="chip">קומה 1</span><span class="chip">76.98 מ״ר</span><span class="price">960,873 ₪</span></div><p class="why">מהזולות ביותר, עם שמש בוקר; יורדת בגלל דגם קטן וקומה עד 3 בלבד.</p><ul class="pc"><li class="pro">שמש בוקר נעימה, קריר יותר בקיץ</li><li class="pro">מרפסת גדולה במיוחד (13 מ״ר)</li><li class="pro">מהמחירים הנמוכים בפרויקט</li><li class="con">הדגם הקטן ביותר (77 מ״ר)</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="2" data-code="G" data-dira="1" data-rank="43" data-type="S" data-sun="מזרח" data-floor="1"><div class="rk">43</div><div class="bd"><div class="hd"><span class="loc">בניין 2 · דירה 1</span><span class="sun sun-e">מזרח 🌤️</span></div><div class="facts"><span class="chip">דגם S</span><span class="chip">קומה 1</span><span class="chip">76.98 מ״ר</span><span class="price">976,218 ₪</span></div><p class="why">מהזולות ביותר, עם שמש בוקר; יורדת בגלל דגם קטן וקומה עד 3 בלבד.</p><ul class="pc"><li class="pro">שמש בוקר נעימה, קריר יותר בקיץ</li><li class="pro">מרפסת גדולה במיוחד (13 מ״ר)</li><li class="pro">מהמחירים הנמוכים בפרויקט</li><li class="con">הדגם הקטן ביותר (77 מ״ר)</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="3" data-code="A" data-dira="35" data-rank="44" data-type="H" data-sun="צפון" data-floor="7"><div class="rk">44</div><div class="bd"><div class="hd"><span class="loc">בניין 3 · דירה 35</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 7</span><span class="chip">78.74 מ״ר</span><span class="price">1,000,852 ₪</span></div><p class="why">פונה צפון (שמש חלשה) — רק כמוצא אחרון, אך לפחות בקומה גבוהה.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="pro">קומה 7 — נוף, אוויר ופרטיות</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="4" data-code="BE" data-dira="17" data-rank="45" data-type="H" data-sun="צפון" data-floor="3"><div class="rk">45</div><div class="bd"><div class="hd"><span class="loc">בניין 4 · דירה 17</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 3</span><span class="chip">78.74 מ״ר</span><span class="price">995,052 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="3" data-code="A" data-dira="15" data-rank="46" data-type="H" data-sun="צפון" data-floor="3"><div class="rk">46</div><div class="bd"><div class="hd"><span class="loc">בניין 3 · דירה 15</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 3</span><span class="chip">78.74 מ״ר</span><span class="price">999,604 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="7" data-code="B2" data-dira="17" data-rank="47" data-type="H" data-sun="צפון" data-floor="3"><div class="rk">47</div><div class="bd"><div class="hd"><span class="loc">בניין 7 · דירה 17</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 3</span><span class="chip">78.74 מ״ר</span><span class="price">1,000,852 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="6" data-code="C" data-dira="17" data-rank="48" data-type="H" data-sun="צפון" data-floor="3"><div class="rk">48</div><div class="bd"><div class="hd"><span class="loc">בניין 6 · דירה 17</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 3</span><span class="chip">78.74 מ״ר</span><span class="price">1,001,880 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="5" data-code="BW" data-dira="17" data-rank="49" data-type="H" data-sun="צפון" data-floor="3"><div class="rk">49</div><div class="bd"><div class="hd"><span class="loc">בניין 5 · דירה 17</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 3</span><span class="chip">78.74 מ״ר</span><span class="price">1,004,083 ₪</span></div><p class="why">פונה צפון — מוצא אחרון; קומה בינונית.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="5" data-code="BW" data-dira="12" data-rank="50" data-type="H" data-sun="צפון" data-floor="2"><div class="rk">50</div><div class="bd"><div class="hd"><span class="loc">בניין 5 · דירה 12</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 2</span><span class="chip">78.74 מ״ר</span><span class="price">995,345 ₪</span></div><p class="why">פונה צפון וגם קומה נמוכה — בתחתית הדירוג.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="4" data-code="BE" data-dira="12" data-rank="51" data-type="H" data-sun="צפון" data-floor="2"><div class="rk">51</div><div class="bd"><div class="hd"><span class="loc">בניין 4 · דירה 12</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 2</span><span class="chip">78.74 מ״ר</span><span class="price">996,153 ₪</span></div><p class="why">פונה צפון וגם קומה נמוכה — בתחתית הדירוג.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="3" data-code="A" data-dira="10" data-rank="52" data-type="H" data-sun="צפון" data-floor="2"><div class="rk">52</div><div class="bd"><div class="hd"><span class="loc">בניין 3 · דירה 10</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 2</span><span class="chip">78.74 מ״ר</span><span class="price">996,447 ₪</span></div><p class="why">פונה צפון וגם קומה נמוכה — בתחתית הדירוג.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="7" data-code="B2" data-dira="12" data-rank="53" data-type="H" data-sun="צפון" data-floor="2"><div class="rk">53</div><div class="bd"><div class="hd"><span class="loc">בניין 7 · דירה 12</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 2</span><span class="chip">78.74 מ״ר</span><span class="price">998,870 ₪</span></div><p class="why">פונה צפון וגם קומה נמוכה — בתחתית הדירוג.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="6" data-code="C" data-dira="12" data-rank="54" data-type="H" data-sun="צפון" data-floor="2"><div class="rk">54</div><div class="bd"><div class="hd"><span class="loc">בניין 6 · דירה 12</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 2</span><span class="chip">78.74 מ״ר</span><span class="price">1,000,779 ₪</span></div><p class="why">פונה צפון וגם קומה נמוכה — בתחתית הדירוג.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">קומה 2 — נמוכה</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="4" data-code="BE" data-dira="7" data-rank="55" data-type="H" data-sun="צפון" data-floor="1"><div class="rk">55</div><div class="bd"><div class="hd"><span class="loc">בניין 4 · דירה 7</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 1</span><span class="chip">78.74 מ״ר</span><span class="price">993,877 ₪</span></div><p class="why">פונה צפון וגם קומה נמוכה — בתחתית הדירוג.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="6" data-code="C" data-dira="7" data-rank="56" data-type="H" data-sun="צפון" data-floor="1"><div class="rk">56</div><div class="bd"><div class="hd"><span class="loc">בניין 6 · דירה 7</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 1</span><span class="chip">78.74 מ״ר</span><span class="price">1,002,614 ₪</span></div><p class="why">פונה צפון וגם קומה נמוכה — בתחתית הדירוג.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="7" data-code="B2" data-dira="7" data-rank="57" data-type="H" data-sun="צפון" data-floor="1"><div class="rk">57</div><div class="bd"><div class="hd"><span class="loc">בניין 7 · דירה 7</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 1</span><span class="chip">78.74 מ״ר</span><span class="price">1,003,495 ₪</span></div><p class="why">פונה צפון וגם קומה נמוכה — בתחתית הדירוג.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+<article class="card t4" data-bld="5" data-code="BW" data-dira="7" data-rank="58" data-type="H" data-sun="צפון" data-floor="1"><div class="rk">58</div><div class="bd"><div class="hd"><span class="loc">בניין 5 · דירה 7</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם H</span><span class="chip">קומה 1</span><span class="chip">78.74 מ״ר</span><span class="price">1,007,534 ₪</span></div><p class="why">פונה צפון וגם קומה נמוכה — בתחתית הדירוג.</p><ul class="pc"><li class="pro">דגם H הנפוץ (41 יח׳) — סביר שיישאר פנוי לתורך</li><li class="con">פונה צפון — שמש חלשה</li><li class="con">קומה 1 — נמוכה מדי (רעש ופרטיות)</li></ul></div><button class="take" type="button" aria-label="סמן דירה כנלקחה">✓ נלקחה</button></article>
+</section>
+
+<section>
+<h2 class="sh"><span class="ic">🔄</span> גיבוי — 4 חדרים</h2>
+<p style="font-size:13px;color:var(--muted);margin:-4px 0 8px">רק אם לא נשארו 3.5 חדרים טובות. עדיף דגם C/CM (מזרח/מערב) על פני A (צפון). מדורג לפי העדפה:</p>
+<article class="card four"><div class="rk rk4">4ח׳</div><div class="bd"><div class="hd"><span class="loc">בניין 1 · דירה 19</span><span class="sun sun-e">מזרח/מערב 🌤️</span></div><div class="facts"><span class="chip">דגם C</span><span class="chip">קומה 4</span><span class="chip">101.50 מ״ר</span><span class="price">1,377,363 ₪</span></div><ul class="pc"><li class="pro">במגדל הטוב ביותר (T)</li><li class="pro">דגם C/CM — פונה מזרח/מערב, שמש טובה</li><li class="pro">קומה 4 — עומדת ביעד</li><li class="pro">+21 מ״ר וחדר נוסף מול 3.5</li><li class="con">תשואה נמוכה יותר מ-3.5 (יקרה ב-~380 אלף ₪)</li></ul></div></article>
+<article class="card four"><div class="rk rk4">4ח׳</div><div class="bd"><div class="hd"><span class="loc">בניין 8 · דירה 23</span><span class="sun sun-e">מזרח/מערב 🌤️</span></div><div class="facts"><span class="chip">דגם CM</span><span class="chip">קומה 4</span><span class="chip">101.46 מ״ר</span><span class="price">1,378,882 ₪</span></div><ul class="pc"><li class="pro">במגדל הטוב ביותר (T)</li><li class="pro">דגם C/CM — פונה מזרח/מערב, שמש טובה</li><li class="pro">קומה 4 — עומדת ביעד</li><li class="pro">+21 מ״ר וחדר נוסף מול 3.5</li><li class="con">תשואה נמוכה יותר מ-3.5 (יקרה ב-~380 אלף ₪)</li></ul></div></article>
+<article class="card four"><div class="rk rk4">4ח׳</div><div class="bd"><div class="hd"><span class="loc">בניין 8 · דירה 21</span><span class="sun sun-e">מזרח/מערב 🌤️</span></div><div class="facts"><span class="chip">דגם C</span><span class="chip">קומה 4</span><span class="chip">101.50 מ״ר</span><span class="price">1,380,907 ₪</span></div><ul class="pc"><li class="pro">במגדל הטוב ביותר (T)</li><li class="pro">דגם C/CM — פונה מזרח/מערב, שמש טובה</li><li class="pro">קומה 4 — עומדת ביעד</li><li class="pro">+21 מ״ר וחדר נוסף מול 3.5</li><li class="con">תשואה נמוכה יותר מ-3.5 (יקרה ב-~380 אלף ₪)</li></ul></div></article>
+<article class="card four"><div class="rk rk4">4ח׳</div><div class="bd"><div class="hd"><span class="loc">בניין 1 · דירה 17</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם A</span><span class="chip">קומה 4</span><span class="chip">100.23 מ״ר</span><span class="price">1,376,025 ₪</span></div><ul class="pc"><li class="pro">במגדל הטוב ביותר (T)</li><li class="pro">קומה 4 — עומדת ביעד</li><li class="pro">+21 מ״ר וחדר נוסף מול 3.5</li><li class="con">דגם A — פונה צפון, שמש חלשה</li><li class="con">תשואה נמוכה יותר מ-3.5 (יקרה ב-~380 אלף ₪)</li></ul></div></article>
+<article class="card four"><div class="rk rk4">4ח׳</div><div class="bd"><div class="hd"><span class="loc">בניין 8 · דירה 19</span><span class="sun sun-n">צפון ☁️</span></div><div class="facts"><span class="chip">דגם A</span><span class="chip">קומה 4</span><span class="chip">100.23 מ״ר</span><span class="price">1,376,098 ₪</span></div><ul class="pc"><li class="pro">במגדל הטוב ביותר (T)</li><li class="pro">קומה 4 — עומדת ביעד</li><li class="pro">+21 מ״ר וחדר נוסף מול 3.5</li><li class="con">דגם A — פונה צפון, שמש חלשה</li><li class="con">תשואה נמוכה יותר מ-3.5 (יקרה ב-~380 אלף ₪)</li></ul></div></article>
+</section>
+
+<p class="foot">כלי עזר אישי לפגישת בחירת דירה · הנתונים מהמחירון הרשמי · כיווני השמש נגזרו מתוכניות הבניינים</p>
+</div>
+
+<div class="bar">
+<button id="next" type="button">⭐ הדירה הפנויה הבאה שלי</button>
+<button id="reset" type="button">איפוס</button>
+</div>
+<script>
+(function(){
+ var cards=[].slice.call(document.querySelectorAll('.card[data-rank]'));
+ var q=document.getElementById('q'),chips=document.getElementById('chips'),
+     count=document.getElementById('count');
+ var filt='all';
+ function keyOf(c){return 'taken:'+c.dataset.bld+'-'+c.dataset.dira;}
+ function load(){cards.forEach(function(c){try{if(localStorage.getItem(keyOf(c)))c.classList.add('taken');}catch(e){}});}
+ function match(c){
+   var t=(q.value||'').replace(/[^0-9]/g,'');
+   if(t){ if(c.dataset.bld!==t && c.dataset.dira!==t) return false; }
+   if(filt==='avail'&&c.classList.contains('taken'))return false;
+   if(filt==='D'&&c.dataset.type!=='D')return false;
+   if(filt==='south'&&c.dataset.sun!=='דרום')return false;
+   if(filt==='fl4'&&parseInt(c.dataset.floor,10)<4)return false;
+   return true;
+ }
+ function apply(){
+   var n=0;
+   cards.forEach(function(c){var m=match(c);c.classList.toggle('hide',!m);if(m)n++;});
+   // hide tier separators with no visible cards
+   [].forEach.call(document.querySelectorAll('.tsep'),function(sep){
+     var el=sep.nextElementSibling,any=false;
+     while(el&&!el.classList.contains('tsep')){
+       if(el.classList.contains('card')&&!el.classList.contains('hide')){any=true;break;}
+       el=el.nextElementSibling;
+     }
+     sep.classList.toggle('hide',!any);
+   });
+   count.textContent=n+' דירות מוצגות';
+ }
+ q.addEventListener('input',apply);
+ chips.addEventListener('click',function(e){
+   var b=e.target.closest('.fchip');if(!b)return;
+   filt=b.dataset.f;
+   [].forEach.call(chips.children,function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+   apply();
+ });
+ document.addEventListener('click',function(e){
+   var b=e.target.closest('.take');if(!b)return;
+   var c=b.closest('.card');c.classList.toggle('taken');
+   try{if(c.classList.contains('taken'))localStorage.setItem(keyOf(c),'1');
+       else localStorage.removeItem(keyOf(c));}catch(err){}
+   if(filt==='avail')apply();
+ });
+ document.getElementById('next').addEventListener('click',function(){
+   var target=cards.find(function(c){
+     return !c.classList.contains('taken')&&!c.classList.contains('hide');
+   });
+   if(!target){alert('לא נמצאה דירה פנויה בתצוגה הנוכחית.');return;}
+   target.scrollIntoView({behavior:'smooth',block:'center'});
+   target.classList.remove('flash');void target.offsetWidth;target.classList.add('flash');
+ });
+ document.getElementById('reset').addEventListener('click',function(){
+   if(!confirm('לאפס את כל הסימונים של דירות שנלקחו?'))return;
+   cards.forEach(function(c){c.classList.remove('taken');try{localStorage.removeItem(keyOf(c));}catch(e){}});
+   apply();
+ });
+ load();apply();
+})();
+</script></body></html>
