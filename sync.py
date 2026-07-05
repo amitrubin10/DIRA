@@ -37,8 +37,18 @@ def main():
         if st in SOLD:
             taken.append("%s-%s" % (num, x.get("name")))
     taken = sorted(set(taken))
+    ts = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    # if availability is unchanged, keep the previous timestamp so the file stays
+    # byte-identical -> no commit -> no needless Pages rebuild every 10 minutes.
+    try:
+        with open("status.json", encoding="utf-8") as f:
+            old = json.load(f)
+        if old.get("taken") == taken and old.get("updated_utc"):
+            ts = old["updated_utc"]
+    except Exception:
+        pass
     out = {
-        "updated_utc": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "updated_utc": ts,
         "affordable_total": affordable,
         "affordable_taken": len(taken),
         "taken": taken,
