@@ -163,6 +163,7 @@ table.data tr:last-child td{border-bottom:none}
 <div class="chips" id="chips">
 <button class="fchip" data-f="all" aria-pressed="true">הכול</button>
 <button class="fchip" data-f="avail" aria-pressed="false">רק פנויות</button>
+<button class="fchip" data-f="taken" aria-pressed="false">רק נתפסו</button>
 <button class="fchip" data-f="D" aria-pressed="false">דגם D</button>
 <button class="fchip" data-f="south" aria-pressed="false">דרום בלבד</button>
 <button class="fchip" data-f="fl4" aria-pressed="false">קומה 4+</button>
@@ -196,8 +197,9 @@ table.data tr:last-child td{border-bottom:none}
 </section>
 
 <section>
-<h2 class="sh"><span class="ic">🧭</span> תמונת מצב — כמה דירות מכל סוג</h2>
-<p style="font-size:13.5px;color:var(--muted);margin:0 0 8px"><b>3.5 חדרים — 58 דירות, 4 קודי דגם (= 3 תבניות אמיתיות):</b></p>
+<details class="method">
+<summary>🧭 תמונת מצב — כמה דירות מכל סוג</summary>
+<p style="font-size:13.5px;color:var(--muted);margin:8px 0 8px"><b>3.5 חדרים — 58 דירות, 4 קודי דגם (= 3 תבניות אמיתיות):</b></p>
 <div class="scroller"><table class="data">
 <thead><tr><th>דגם</th><th>יח׳</th><th>בניינים</th><th>שטח</th><th>מרפסת</th><th>טווח מחיר</th></tr></thead>
 <tbody>
@@ -227,6 +229,7 @@ table.data tr:last-child td{border-bottom:none}
 <div class="insight" style="background:var(--t6bg);border-right-color:var(--t6)">
 <b style="color:var(--t6)">⚠️ שני בנייני מסחר — להימנע:</b> בקומת הקרקע של <b>בניין 2 (G)</b> ו-<b>בניין 3 (A)</b> יש חנויות. לכן כל הדירות בהם יורדות לתחתית הרשימה — קומות גבוהות רק בלית ברירה, וקומות נמוכות מסומנות "לא מומלץ". <b>שאר הבניינים — כולל הטופ (1 ו-8) — נקיים לגמרי.</b>
 </div>
+</details>
 </section>
 
 <div class="viewtabs">
@@ -486,6 +489,7 @@ table.data tr:last-child td{border-bottom:none}
    var t=(q.value||'').replace(/[^0-9]/g,'');
    if(t){ if(c.dataset.bld!==t && c.dataset.dira!==t) return false; }
    if(filt==='avail'&&(c.classList.contains('taken')||c.classList.contains('sold')))return false;
+   if(filt==='taken'&&!(c.classList.contains('taken')||c.classList.contains('sold')))return false;
    if(filt==='D'&&c.dataset.type!=='D')return false;
    if(filt==='south'&&c.dataset.sun!=='דרום')return false;
    if(filt==='fl4'&&parseInt(c.dataset.floor,10)<4)return false;
