@@ -67,6 +67,14 @@ details.method[open] summary::after{content:"▴"}
 .hero .big{font-size:22px;font-weight:800;margin:3px 0 2px}
 .hero .line{font-size:14px;color:var(--muted)}
 .hero .facts{margin-top:10px}
+.avail{display:flex;gap:10px;margin:14px 0}
+.avbox{flex:1;background:#fff;border:1px solid var(--line);border-top:4px solid var(--t1);
+ border-radius:14px;padding:12px 8px;text-align:center;box-shadow:0 6px 16px -14px rgba(0,0,0,.4)}
+.avbox.b4{border-top-color:var(--brand)}
+.avn{display:block;font-size:32px;font-weight:800;color:var(--t1);line-height:1.1;font-variant-numeric:tabular-nums}
+.avbox.b4 .avn{color:var(--brand)}
+.avn small{font-size:16px;color:var(--muted);font-weight:600}
+.avl{font-size:13px;color:var(--muted);font-weight:700}
 /* scroll tables */
 .scroller{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
 table.data{border-collapse:collapse;width:100%;font-size:13.5px;min-width:520px}
@@ -179,6 +187,11 @@ table.data tr:last-child td{border-bottom:none}
 <div class="facts"><span class="chip">995,353 ₪</span><span class="sun sun-s">דרום ☀️</span></div>
 <p class="why" style="margin-bottom:0">הגדולה והמשתלמת ביותר, פונה דרום אל חצר פנימית ירוקה ושקטה, קומה גבוהה, במגדל מבודד. הצירוף המנצח.</p>
 </div>
+</section>
+
+<section class="avail">
+<div class="avbox"><span class="avn"><b id="av35n">—</b><small>/58</small></span><span class="avl">3.5 חדרים פנויות</span></div>
+<div class="avbox b4"><span class="avn"><b id="av4n">—</b><small>/156</small></span><span class="avl">4 חדרים פנויות</span></div>
 </section>
 
 <section>
@@ -579,6 +592,8 @@ table.data tr:last-child td{border-bottom:none}
      if(c.dataset.set==='35')av35++;else if(c.dataset.set==='4')av4++;});
    var ac=document.getElementById('availchip');
    if(ac)ac.innerHTML='<b>'+av35+'</b>/58 3.5 פנויות · <b>'+av4+'</b>/156 (4ח׳)';
+   var e35=document.getElementById('av35n'),e4=document.getElementById('av4n');
+   if(e35)e35.textContent=av35; if(e4)e4.textContent=av4;
    apply();
  }
  function sync(){
