@@ -42,6 +42,8 @@ header .sub{margin:4px 0 0;font-size:13px;opacity:.85}
  border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
 #sync:active{background:var(--brand);color:#fff}
 #sync.spin{opacity:.55;pointer-events:none}
+.syncbtns{display:flex;gap:6px;align-items:center;flex:0 0 auto}
+#cfg{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font-size:13px;cursor:pointer;font-family:inherit}
 .soldtag{font-size:11px;font-weight:800;color:#fff;background:var(--t4);padding:2px 8px;border-radius:999px;white-space:nowrap}
 .card.sold{opacity:.55;filter:grayscale(.55)}
 .card.sold .loc{text-decoration:line-through}
@@ -154,7 +156,7 @@ table.data tr:last-child td{border-bottom:none}
 
 <div class="tools">
 <input id="q" type="search" inputmode="numeric" placeholder="חיפוש מהיר: מספר בניין או מספר דירה…" autocomplete="off">
-<div class="syncrow"><span id="syncinfo">בודק מלאי מול האתר…</span><button id="sync" type="button">🔄 סנכרן</button></div>
+<div class="syncrow"><span id="syncinfo">בודק מלאי…</span><span class="syncbtns"><button id="cfg" type="button" title="הגדר סנכרון חי">⚙️</button><button id="sync" type="button">🔄 סנכרן</button></span></div>
 <div class="chips" id="chips">
 <button class="fchip" data-f="all" aria-pressed="true">הכול</button>
 <button class="fchip" data-f="avail" aria-pressed="false">רק פנויות</button>
@@ -535,6 +537,20 @@ table.data tr:last-child td{border-bottom:none}
    cards.forEach(function(c){c.classList.remove('taken');try{localStorage.removeItem(keyOf(c));}catch(e){}});
    apply();
  });
+ var FEED_SOLD={sold:1,Contract:1,Precontract:1,negotiation:1,notForSale:1};
+ var PROXY_DEFAULT="";
+ function getProxy(){try{return (localStorage.getItem('proxyUrl')||PROXY_DEFAULT||'').trim();}catch(e){return (PROXY_DEFAULT||'').trim();}}
+ function takenFromFeed(data){
+   var t=[];
+   (data.data||[]).forEach(function(x){
+     if(x.apartmentCategory!=='affordableHousingProgram')return;
+     var bf=x.building_floors||{},b=(bf.buildings||{}).name||'';if(!b)return;
+     var st=x.status,tx=x.apartments_transactions||[];
+     if(tx.length&&tx[0].status)st=tx[0].status;
+     if(FEED_SOLD[st])t.push(b.split('-').pop()+'-'+x.name);
+   });
+   return {taken:t,affordable_taken:t.length,updated_utc:new Date().toISOString(),live:true};
+ }
  function applyStatus(js){
    var set={};(js.taken||[]).forEach(function(k){set[k]=1;});
    var ours=0;
@@ -550,18 +566,24 @@ table.data tr:last-child td{border-bottom:none}
    var ts='';
    try{if(js.updated_utc){var d=new Date(js.updated_utc);
      ts='עודכן '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+' · ';}}catch(e){}
-   info.innerHTML=ts+'<b>'+((js&&js.affordable_taken)||ours)+'</b> דירות נתפסו בפרויקט';
+   info.innerHTML=ts+'<b>'+((js&&js.affordable_taken)||ours)+'</b> נתפסו · '+(js.live?'🟢 חי':'🟡 רובוט (~שעה)');
    apply();
  }
  function sync(){
    var b=document.getElementById('sync');b.classList.add('spin');
-   fetch('status.json?t='+Date.now(),{cache:'no-store'})
-     .then(function(r){if(!r.ok)throw 0;return r.json();})
+   var px=getProxy();
+   var first=px?fetch(px,{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(takenFromFeed):Promise.reject(0);
+   first.catch(function(){return fetch('status.json?t='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){j.live=false;return j;});})
      .then(function(js){applyStatus(js);})
-     .catch(function(){document.getElementById('syncinfo').textContent='סנכרון לא זמין (פתח דרך הקישור באתר)';})
+     .catch(function(){document.getElementById('syncinfo').textContent='סנכרון לא זמין';})
      .then(function(){b.classList.remove('spin');});
  }
  document.getElementById('sync').addEventListener('click',sync);
+ var cfgb=document.getElementById('cfg');
+ if(cfgb)cfgb.addEventListener('click',function(){
+   var v=prompt('כתובת שרת הסנכרון החי (Cloudflare Worker) — הדבק כאן להפעלת עדכון חי מיידי. ריק = מצב רובוט (~שעה):',getProxy());
+   if(v!==null){try{localStorage.setItem('proxyUrl',v.trim());}catch(e){}sync();}
+ });
  load();apply();sync();
 })();
 </script></body></html>
