@@ -538,7 +538,7 @@ table.data tr:last-child td{border-bottom:none}
    apply();
  });
  var FEED_SOLD={sold:1,Contract:1,Precontract:1,negotiation:1,notForSale:1};
- var PROXY_DEFAULT="";
+ var PROXY_DEFAULT="https://dira-proxy.amitr-dira.workers.dev";
  function getProxy(){try{return (localStorage.getItem('proxyUrl')||PROXY_DEFAULT||'').trim();}catch(e){return (PROXY_DEFAULT||'').trim();}}
  function takenFromFeed(data){
    var t=[];
