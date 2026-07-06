@@ -152,7 +152,7 @@ table.data tr:last-child td{border-bottom:none}
 <header><div class="hwrap">
 <h1>דירוג דירות · פרויקט HAKEREM</h1>
 <p class="sub">כרמי גת צפון · מחיר מטרה · 3.5 חדרים (השקעה)</p>
-<div class="meta"><span>מיקום בבחירה: 168</span><span>מועד: 7.8.2026</span><span>58 דירות מדורגות</span></div>
+<div class="meta"><span>מיקום בהגרלה: 168 (קבוע)</span><span>מועד: 7.8.2026</span><span id="availchip">3.5 פנויות: —</span></div>
 </div></header>
 
 <div class="wrap">
@@ -570,6 +570,11 @@ table.data tr:last-child td{border-bottom:none}
    try{if(js.updated_utc){var d=new Date(js.updated_utc);
      ts='עודכן '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})+' · ';}}catch(e){}
    info.innerHTML=ts+'<b>'+((js&&js.affordable_taken)||ours)+'</b> נתפסו · '+(js.live?'🟢 חי':'🟡 רובוט (~שעה)');
+   var av35=0,av4=0;
+   cards.forEach(function(c){if(c.classList.contains('sold'))return;
+     if(c.dataset.set==='35')av35++;else if(c.dataset.set==='4')av4++;});
+   var ac=document.getElementById('availchip');
+   if(ac)ac.innerHTML='<b>'+av35+'</b>/58 3.5 פנויות · <b>'+av4+'</b>/156 (4ח׳)';
    apply();
  }
  function sync(){
